@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Consumo de API HTTPS</title>
+</head>
+<body>
+  <h1>Lista de Alunos</h1>
+
+  <button onclick="listarAlunos()">
+    Carregar Alunos
+  </button>
+
+  <ul id="lista"></ul>
+
+  <script>
+    async function listarAlunos() {
+      try {
+        const resposta = await fetch(
+          "https://localhost:3000/api/alunos"
+        );
+
+        if (!resposta.ok) {
+          throw new Error("Erro HTTP: " + resposta.status);
+        }
+
+        const alunos = await resposta.json();
+
+        const lista = document.querySelector("#lista");
+        lista.innerHTML = "";
+
+        alunos.forEach(aluno => {
+          const item = document.createElement("li");
+
+          item.textContent =
+            `${aluno.nome} - ${aluno.curso}`;
+
+          lista.appendChild(item);
+        });
+
+      } catch (erro) {
+        console.error("Erro ao consumir API:", erro);
+      }
+    }
+  </script>
+</body>
+</html>
